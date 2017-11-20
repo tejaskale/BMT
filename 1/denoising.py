@@ -1,3 +1,4 @@
+#   -*- coding: utf-8 -*-
 #####################################################################
 #
 #   denoising.py
@@ -22,9 +23,14 @@ import scipy.optimize
 
 # problem with dimensions
 # Iα is supposed to be a single number! I think
-# D is 3 dimensional matrix (64x64x5)
-# r is 2 dimensional matrix (64x64)
-# alpha is 1 dimensional matrix (5)
+#   -- Nope! I_aplha is the linear combination of the (difference images) * coefficients.
+#   -- We are trying to optimize the coefficients to minimize the
+#   -- difference between denoised image(which is given) and I_alpha.
+#   -- The denoised image is not generally available.
+#   -- I_alpha should be (64x64)
+# D is 3 dimensional matrix (64x64x5) - the 5 difference images
+# r is 2 dimensional matrix (64x64)   - the single residual image component.
+# alpha is 1 dimensional matrix (5)   - the coefficients for the 5 difference images.
 
 def linear_combination(alpha, d, r):
     # to be implemented!
