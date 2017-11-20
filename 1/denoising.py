@@ -43,10 +43,9 @@ def linear_combination(alpha, d, r):
     # dummy implementation to be replaced
     # let's get the smallest value of Iα
     i_alpha = 0 * r
-
-    for row in range(len(r)):
-        for column in range(len(r[0])):
-            i_alpha[row][column] = sum([alpha * delta for alpha, delta in zip(alpha, d[row][column])]) + r[row][column]
+    for i in range(len(d[0,0,:])):
+        i_alpha += alpha[i]*d[:,:,i]
+    i_alpha += r
     return i_alpha
 
 def cost_function(alpha, i_orig, d, r):
