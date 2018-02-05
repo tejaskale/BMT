@@ -31,7 +31,7 @@ def compute_histogram(img, nbins):
 
 # this function applies histogram equalization
 # the returned image is contrast enhanced
-def apply_transformation(imageSize, maxInt, p):
+def apply_transformation(image, imageSize, maxInt, p):
     image_adjusted = np.zeros([imageSize[0], imageSize[1]])
     for i in range(imageSize[0]):
         for j in range(imageSize[1]):
@@ -52,30 +52,49 @@ nBins = maxInt + 1  # number of histogram bins
 p = compute_histogram(image, nBins)
 
 # histogram equalizatiopAfterEq = pAfterEq*nBinsn
-imageEq = apply_transformation(imageSize, maxInt, p)
+imageEq = apply_transformation(image, imageSize, maxInt, p)
 
 # histogram after equalization
 pAfterEq = compute_histogram(imageEq, nBins)
 
+# Apply the transformation again. There is no change in the histogram or the image
+# Because the image intensities are already distributed according to the CDF.
+# Recalculating the histogram will result in the same CDF and hence the same intensity for
+# Each pixel.
+
+imageEq2 = apply_transformation(imageEq, imageSize, maxInt , pAfterEq)
+
+pAfterEq2 = compute_histogram(imageEq2, nBins)
 
 # show results
 plt.figure()
 
-plt.subplot(2, 2, 1)
+plt.subplot(2, 3, 1)
 plt.imshow(image, cmap='gray')
 plt.title('original image')
 
-plt.subplot(2, 2, 2)
+plt.subplot(2, 3, 2)
 plt.imshow(imageEq, cmap='gray')
 plt.title('image after equalization')
 
-plt.subplot(2, 2, 3)
+plt.subplot(2, 3, 3)
+plt.imshow(imageEq2, cmap='gray')
+plt.title('image after equalization2')
+
+
+plt.subplot(2, 3, 4)
 bins = np.linspace(0, nBins, nBins)
 plt.bar(bins, p, align='center', width=1)
 plt.title('original histogram [normalized]')
 
-plt.subplot(2, 2, 4)
+plt.subplot(2, 3, 5)
 plt.bar(bins, pAfterEq, align='center', width=1)
 plt.title('histogram after eq [normalized]')
 
+plt.subplot(2, 3, 6)
+plt.bar(bins, pAfterEq2, align='center', width=1)
+plt.title('histogram after eq [normalized]2')
+
+
 plt.show()
+
